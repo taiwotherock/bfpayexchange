@@ -1,0 +1,27 @@
+{
+  "name": "bfpayexchange",
+  "version": "1.0.0",
+  "description": "DeFi Wallet plugin with OpenClaw + Telegram UI",
+  "main": "index.js",
+  "scripts": {
+    "start": "node telegram/bot.js"
+  },
+  "keywords": [
+    "openclaw",
+    "defi",
+    "telegram",
+    "ethers",
+    "crypto",
+    "wallet",
+    "swap",
+    "portfolio"
+  ],
+  "author": "Dimension Logic Technology",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.13.6",
+    "dotenv": "^16.0.0",
+    "ethers": "^6.0.0",
+    "telegraf": "^4.12.0"
+  }
+}

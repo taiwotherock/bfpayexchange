@@ -1,0 +1,12 @@
+{
+  "name": "bfpay-exchange-plugin",
+  "version": "1.0.0",
+  "description": "Building Africa’s first multi-chain Liquidity, AMM, and Lending Infrastructure Engine for stablecoin FX, enabling automated swaps between cNGN and global stablecoins, permissioned P2P agents, licensed OTC desks, institutional borrowers, and a plugin for OpenClaw",
+  "author": "Dimension Logic Technology Ltd",
+  "entry": "index.js",
+  "permissions": [
+    "network",
+    "blockchain",
+    "wallet"
+  ]
+}
