@@ -16,6 +16,7 @@ const addLiquidity = require("./skills/addLiquidity")
 const removeLiquidity = require("./skills/removeLiquidity")
 const adminAMM = require("./skills/adminAMM")
 const ammDashboard = require("./skills/ammDashboard")
+const getPool = require("./skills/getPool")
 
 
 //const swap = require("./skills/swap")
@@ -23,7 +24,7 @@ const ammDashboard = require("./skills/ammDashboard")
 
 // All skills in an array
 const skills = [balance, transfer,fetchLPPosition,fetchSwapQuote,
-  swap,addLiquidity,removeLiquidity,adminAMM,ammDashboard]
+  swap,addLiquidity,removeLiquidity,adminAMM,ammDashboard,getPool]
 
 const swapPatterns = [
   /quote swap (\d+(\.\d+)?) (\w+) to (\w+)/i,
@@ -67,8 +68,8 @@ async function run(message, userContext = {}) {
   const setRateRegex = /(set|update)\s+rate\s+(?:to\s+)?([\d.]+)/i
   const regexWhitelist = /whitelist\s+(0x[a-fA-F0-9]{6,42})/i
   const regexSpread = /set\s+spread\s+(?:to\s+)?([\d.]+)\s*(?:naira|ngn)?/i
-  
-  
+  // Flexible regex for pool command
+  const poolRegex = /fetch\s+pool\s+for\s+(0x[a-fA-F0-9]{40})\s*(?:and)?\s*(0x[a-fA-F0-9]{40})(?:\s+fee\s+(\d+))?/i
   let match, amount, fromToken, toToken, chain
 
 if (msg.startsWith("help") ) 
@@ -80,6 +81,20 @@ else if (msg.startsWith("amm") || msg.includes("dashboard"))
       console.log('amm dashboard ' + address)
       const skill = skills.find(s => s.name === "ammDashboard")
       const result = await skill.execute({rpcUrl:rpcUrl, contractAddress:contractAddress})
+      return result
+}
+else if (msg.startsWith('fetch pool') || (match = text.match(poolRegex))) 
+{
+      console.log('fetch pool ' + address)
+      match = msg.match(poolRegex)
+      const tokenA = match[1]
+      const tokenB = match[2]
+      const fee = match[3] ? Number(match[3]) : 3000 
+      console.log({ tokenA, tokenB, fee })
+      const chain = "base_sepolia";
+        
+      const skill = skills.find(s => s.name === "getPool")
+      const result = await skill.execute({tokenA:tokenA, tokenB:tokenB,fee:fee, rpcUrl:rpcUrl})
       return result
 }
 else if ((match = text.match(setRateRegex))) 
